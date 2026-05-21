@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Select-Object FullName)",
+      "PowerShell(dir \"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\Seminar chuyên đề\\\\Week8 - Vibe Engineering\\\\microservices_api_demo\\\\microservices_api_demo\\\\api-gateway\\\\src\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\Seminar chuyên đề\\\\Week8 - Vibe Engineering\\\\microservices_api_demo\\\\microservices_api_demo\\\\api-gateway\" -Recurse -File | ForEach-Object { $_.FullName })",
+      "PowerShell(java *)",
+      "Bash(where java *)",
+      "Read(//usr/lib/**)",
+      "Read(//usr/local/lib/**)",
+      "Bash(docker --version)",
+      "Bash(curl -s http://localhost:8181/actuator/health)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s http://localhost:8181/actuator)",
+      "Bash(curl -v http://localhost:8181/actuator/health)",
+      "Bash(docker-compose build *)"
+    ]
+  }
+}

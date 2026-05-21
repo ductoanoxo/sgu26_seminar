@@ -1,0 +1,302 @@
+[
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_arithmetic_mean(a, b)}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_arithmetic_mean(a, b): \n    return (a+b)/2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_euclidean_distance(x1, y1, x2, y2):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_euclidean_distance(x1, y1, x2, y2): \n    return ((x1-x2)**2 + (y1-y2)**2)**0.5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def reverse_string(s):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def reverse_string(s): \n    return s[::-1]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def is_even(n):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def is_even(n):\n    return n % 2 == 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def is_odd(n):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def is_odd(n):\n    return n % 2 != 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def is_palindrome(s: str) -> bool:}}}\nCODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def is_palindrome(s: str) -> bool:\n    s = s.lower()\n    return s == s[::-1]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def sum_of_squares(n: int) -> int:}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def sum_of_squares(n: int) -> int:\n    return sum(i * i for i in range(1, n + 1))"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def flatten_list_of_lists(lst: list) -> list:}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def flatten_list_of_lists(lst: list) -> list:\n    return [item for sublist in lst for item in sublist]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_reversed_longer_string(s1, s2):}}}\n    CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_reversed_longer_string(s1, s2):\n    longer_s = get_longer_string(s1, s2)\n    reversed_longer_s = reverse_string(longer_s)\n    return reversed_longer_s\n\ndef get_longer_string(s1, s2):\n    return s1 if len(s1) > len(s2) else s2\n\ndef reverse_string(s):\n    return s[::-1]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_max_multiplication_from_lists(l1, l2):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_max_multiplication_from_lists(l1, l2):\n    l1_mult = get_product(*l1)\n    l2_mult = get_product(*l2)\n    return max(l1_mult, l2_mult)\n\ndef get_product(*args):\n    product = 1\n    for arg in args:\n        product *= arg\n    return product\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_maximal_second_element_squared(numbers: List[List[int]]) -> int:}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_maximal_second_element_squared(numbers: List[List[int]]) -> int:\n    validate_list_length(numbers)\n    second_elements = get_second_elements(numbers)\n    squared_elements = get_squared_elements(second_elements)\n    return max(squared_elements)\n\n\ndef validate_list_length(numbers: List[int]) -> None:\n    if len(numbers) < 2:\n        raise ValueError(\"List must have at least two elements.\")\n    \n\ndef get_second_elements(numbers: List[int]) -> List[int]:\n    return [numbers[i][1] for i in range(len(numbers))]\n\n\ndef get_squared_elements(numbers: List[int]) -> List[int]:\n    return [number ** 2 for number in numbers]}}}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_sum_of_absolute_differences(l1: List[int], l2: List[int]) -> int:}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_sum_of_absolute_differences(l1: List[int], l2: List[int]) -> int:\n    differences = get_absolute_differences(l1, l2)\n    return sum(differences)\n\n\ndef get_absolute_differences(l1: List[int], l2: List[int]) -> List[int]:\n    return [abs(a - b) for a, b in zip(l1, l2)]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_highest_even(numbers: List[int]) -> int:}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_highest_even(numbers: List[int]) -> int:    \n    evens = filter_even_numbers(numbers)\n    return max(evens)\n\n\ndef filter_even_numbers(numbers: List[int]) -> List[int]:\n    return [num for num in numbers if num % 2 == 0]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_average_of_second_elements(numbers: List[List[int]]):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "import statistics\n\n\ndef get_average_of_second_elements(numbers: List[List[int]]) -> float:\n    second_elements = get_second_elements(numbers)\n    return statistics.mean(second_elements)\n\n\ndef get_second_elements(numbers: List[List[int]]) -> List[int]:\n    return [sublist[1] for sublist in numbers]"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "You will be provided with a Python function signature enclosed with {{{ FUNCTION }}}. Your task is to implement it.\n\nFUNCTION: {{{def get_smallest_squared(numbers: List[int]):}}}\n CODE: "
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "text": "def get_smallest_squared(numbers: List[int]) -> int:\n    squared_numbers = square_numbers(numbers)\n    return min(squared_numbers)\n\ndef square_numbers(numbers: List[int]) -> List[int]:\n    return [num ** 2 for num in numbers]"
+          }
+        ]
+      }
+    ]
+  }
+]

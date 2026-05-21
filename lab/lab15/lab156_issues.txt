@@ -1,0 +1,11 @@
+
+Critical Issues:
+1. **Memory Leak**: Cache grows indefinitely with unique arguments
+2. **Thread Safety**: Not safe for concurrent access
+3. **No Expiration**: Cached values never expire
+
+Recommendations:
+1. Add maxsize parameter with LRU eviction
+2. Use threading.Lock for thread safety
+3. Add TTL (time-to-live) for cache entries
+4. Add cache hit/miss statistics

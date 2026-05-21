@@ -1,0 +1,16 @@
+id,name,department,position,salary,hire_date,city,email
+1,Nguyen Van An,Engineering,Backend Developer,25000000,2021-03-15,Ho Chi Minh,an.nguyen@company.com
+2,Tran Thi Bich,Marketing,Marketing Manager,30000000,2020-01-10,Hanoi,bich.tran@company.com
+3,Le Minh Cuong,Engineering,Frontend Developer,22000000,2022-06-01,Ho Chi Minh,cuong.le@company.com
+4,Pham Thi Dung,HR,HR Specialist,18000000,2021-09-20,Da Nang,dung.pham@company.com
+5,Hoang Van Em,Engineering,DevOps Engineer,28000000,2020-11-05,Ho Chi Minh,em.hoang@company.com
+6,Nguyen Thi Phuong,Sales,Sales Representative,20000000,2023-02-14,Hanoi,phuong.nguyen@company.com
+7,Vo Minh Quang,Engineering,Data Engineer,27000000,2021-07-30,Ho Chi Minh,quang.vo@company.com
+8,Dang Thi Thu,Finance,Accountant,19000000,2022-04-18,Da Nang,thu.dang@company.com
+9,Bui Van Tuan,Marketing,Content Writer,15000000,2023-05-22,Hanoi,tuan.bui@company.com
+10,Do Thi Uyen,Engineering,QA Engineer,21000000,2022-01-08,Ho Chi Minh,uyen.do@company.com
+11,Nguyen Van Viet,Sales,Sales Manager,35000000,2019-08-12,Hanoi,viet.nguyen@company.com
+12,Tran Minh Xuan,Finance,Finance Manager,38000000,2018-03-25,Ho Chi Minh,xuan.tran@company.com
+13,Le Thi Yen,HR,HR Manager,32000000,2019-12-01,Da Nang,yen.le@company.com
+14,Pham Van Zung,Engineering,Tech Lead,40000000,2017-06-15,Ho Chi Minh,zung.pham@company.com
+15,Hoang Thi Anh,Marketing,Digital Marketing,23000000,2022-09-10,Hanoi,anh.hoang@company.com

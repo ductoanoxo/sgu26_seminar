@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan & Progress Report: Tầng ngữ nghĩa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f5f3ff;
+            --card-bg: #ffffff;
+            --text-main: #1e1b4b;
+            --text-muted: #475569;
+            --danger: #ef4444;
+            --success: #10b981;
+            --accent: #f8fafc;
+            --warning: #f59e0b;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 40px auto; padding: 40px; background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        header { border-bottom: 2px solid #eef2ff; margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 0 0 10px 0; }
+        .meta { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-muted); }
+        .badge { padding: 4px 12px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+        .badge-purple { background: #e0e7ff; color: var(--primary); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        h2 { font-size: 1.5rem; margin-top: 40px; border-left: 4px solid var(--primary); padding-left: 15px; color: var(--text-main); }
+        .step { margin-bottom: 30px; padding: 24px; background: #fafafa; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .prompt-box { background: #0f172a; color: #f1f5f9; padding: 20px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; position: relative; margin-top: 15px; border-left: 4px solid var(--primary); }
+        .prompt-box::before { content: "PROMPT GỬI AI AGENT"; position: absolute; top: -10px; right: 15px; background: var(--primary); color: white; padding: 2px 10px; font-size: 0.7rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { display: flex; align-items: center; gap: 12px; padding: 10px; background: #fff; border: 1px solid #f1f5f9; margin-bottom: 8px; border-radius: 8px; }
+        .checkbox { width: 18px; height: 18px; border: 2px solid var(--primary); border-radius: 4px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: var(--primary); }
+        .checkbox.checked { background: #e0e7ff; }
+        footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="font-size: 2.5rem;">Implementation Plan: Tầng ngữ nghĩa</h1>
+            <p style="color: var(--text-muted);">Xây dựng bộ từ điển nghiệp vụ và cơ chế RAG để AI hiểu sâu về logic kinh doanh.</p>
+        </header>
+
+        <h2>1. Overview (Tổng quan)</h2>
+        <p>Module Tầng ngữ nghĩa (Business Semantic Layer) đóng vai trò là "cầu nối" giúp AI hiểu được các khái niệm kinh doanh thay vì chỉ làm việc trên các bảng và cột kỹ thuật thô. Mục tiêu là giúp AI trả lời chính xác các câu hỏi nghiệp vụ phức tạp thông qua việc tra cứu Business Logic và học từ các ví dụ mẫu (Few-shot).</p>
+
+        <h2>2. Các bước triển khai chi tiết</h2>
+        
+        <div class="step">
+            <h3>Bước 1: Giao diện Từ điển thuật ngữ (Glossary) cho Admin</h3>
+            <p><strong>Mục tiêu:</strong> Cung cấp nơi để Admin định nghĩa các thuật ngữ, tên cột thân thiện và mô tả nghiệp vụ.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Thiết kế UI Dashboard để quản lý danh sách thuật ngữ (CRUD).</li>
+                <li><strong>Tác vụ 2:</strong> Lưu trữ thông tin glossary vào database và đồng bộ hóa với metadata của AI.</li>
+            </ul>
+            <div class="prompt-box">
+"Hãy xây dựng một trang quản trị (Admin UI) trong Dashboard để quản lý 'Business Glossary'. Trang này cho phép Admin thêm các mục như: 'Tên thuật ngữ', 'Mô tả nghiệp vụ', 'Mapping với cột kỹ thuật'. Đầu ra: Giao diện quản lý Glossary hoàn chỉnh tích hợp vào Dashboard."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 2: Lưu trữ Business Logic vào Vector DB</h3>
+            <p><strong>Mục tiêu:</strong> Sử dụng RAG (Retrieval-Augmented Generation) để AI tra cứu các công thức tính toán phức tạp trước khi sinh SQL.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Triển khai pgvector trên database hiện tại (Supabase/Postgres).</li>
+                <li><strong>Tác vụ 2:</strong> Script chuyển đổi Business Logic thành embedding và lưu vào Vector DB.</li>
+            </ul>
+            <div class="prompt-box">
+"Sử dụng pgvector trên Supabase, hãy tạo bảng 'business_rules_vector' để lưu trữ các quy tắc nghiệp vụ. Viết một service nhỏ để khi user hỏi, hệ thống sẽ thực hiện vector search để tìm các logic liên quan và đưa vào prompt của LLM. Mục tiêu: AI hiểu được các công thức tính toán mà không cần hard-code."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 3: Cấu hình Few-shot Samples (Câu hỏi mẫu)</h3>
+            <p><strong>Mục tiêu:</strong> Cung cấp các cặp "Câu hỏi - SQL" mẫu để AI học hỏi cách xử lý các yêu cầu đặc thù hoặc khó.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Xây dựng hệ thống quản lý các Few-shot samples.</li>
+                <li><strong>Tác vụ 2:</strong> Tích hợp logic Dynamic Few-shot Selection vào pipeline NL2SQL.</li>
+            </ul>
+            <div class="prompt-box">
+"Xây dựng chức năng 'Few-shot Management'. Khi sinh SQL, hãy lấy ra 3 ví dụ có độ tương đồng cao nhất với câu hỏi của người dùng (sử dụng vector search) và đưa vào prompt làm ngữ cảnh. Mục tiêu: Tăng độ chính xác của SQL sinh ra cho các trường hợp phức tạp."
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+        <header>
+            <h1>Progress Report: Tầng ngữ nghĩa</h1>
+            <div class="meta">
+                <span class="badge badge-warning">Đang triển khai</span>
+                <span>Cập nhật: 16/05/2026</span>
+                <span>Tiến độ: 10%</span>
+            </div>
+        </header>
+
+        <h2>📈 Tiến trình tổng quan (Progress Overview)</h2>
+        <div class="step">
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong>Tổng số tác vụ:</strong> 3</li>
+                <li><strong>Đã hoàn thành:</strong> 0</li>
+            </ul>
+        </div>
+
+        <h2>📊 Chỉ số đánh giá (Evaluation Criteria)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chỉ số</th>
+                    <th>Mục tiêu</th>
+                    <th>Kết quả hiện tại</th>
+                    <th>Đạt yêu cầu?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Glossary Coverage</strong></td>
+                    <td>100% Core tables</td>
+                    <td>0%</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Logic Retrieval Accuracy</strong></td>
+                    <td>> 85%</td>
+                    <td>Chưa đo lường</td>
+                    <td>⏳</td>
+                </tr>
+                <tr>
+                    <td><strong>Few-shot Improvement</strong></td>
+                    <td>+ 20% Accuracy</td>
+                    <td>Đang test</td>
+                    <td>⏳</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ Các hạng mục đã hoàn thành (Done)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox checked">✓</div> <strong>Xác định kiến trúc:</strong> Đã chọn pgvector làm công cụ lưu trữ ngữ nghĩa.</li>
+        </ul>
+
+        <h2>🚧 Đang triển khai (In Progress)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <strong>Prototype Vector Search:</strong> Đang thử nghiệm việc nhúng (embedding) các công thức.</li>
+            <li><div class="checkbox"></div> <strong>UI Glossary:</strong> Đang thiết kế mockup cho trang quản trị.</li>
+        </ul>
+
+        <h2>🛑 Khó khăn & Khuyến nghị (Blockers & Recommendations)</h2>
+        <div class="step" style="border-left: 4px solid var(--danger);">
+            <strong>Embedding Model:</strong> Cần lựa chọn model embedding tối ưu cho thuật ngữ nghiệp vụ tiếng Việt.
+        </div>
+
+        <h2>📅 Kế hoạch tiếp theo (Next Steps)</h2>
+        <div class="step">
+            <ol>
+                <li>Hoàn thiện schema database cho Glossary và Few-shot.</li>
+                <li>Triển khai API CRUD cho Admin quản lý dữ liệu ngữ nghĩa.</li>
+                <li>Tích hợp bước tra cứu Vector vào NL2SQL Service.</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>Tài liệu được sinh bởi Antigravity AI dựa trên framework Indigo Premium.</p>
+        </footer>
+    </div>
+</body>
+</html>

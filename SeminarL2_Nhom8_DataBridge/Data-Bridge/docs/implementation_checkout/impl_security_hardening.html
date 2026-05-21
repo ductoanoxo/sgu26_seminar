@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan & Progress Report: Security Hardening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f5f3ff;
+            --card-bg: #ffffff;
+            --text-main: #1e1b4b;
+            --text-muted: #475569;
+            --danger: #ef4444;
+            --success: #10b981;
+            --accent: #f8fafc;
+            --warning: #f59e0b;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 40px auto; padding: 40px; background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        header { border-bottom: 2px solid #eef2ff; margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 0 0 10px 0; }
+        .meta { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-muted); }
+        .badge { padding: 4px 12px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+        .badge-purple { background: #e0e7ff; color: var(--primary); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        h2 { font-size: 1.5rem; margin-top: 40px; border-left: 4px solid var(--primary); padding-left: 15px; color: var(--text-main); }
+        .step { margin-bottom: 30px; padding: 24px; background: #fafafa; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .prompt-box { background: #0f172a; color: #f1f5f9; padding: 20px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; position: relative; margin-top: 15px; border-left: 4px solid var(--primary); }
+        .prompt-box::before { content: "PROMPT GỬI AI AGENT"; position: absolute; top: -10px; right: 15px; background: var(--primary); color: white; padding: 2px 10px; font-size: 0.7rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { display: flex; align-items: center; gap: 12px; padding: 10px; background: #fff; border: 1px solid #f1f5f9; margin-bottom: 8px; border-radius: 8px; }
+        .checkbox { width: 18px; height: 18px; border: 2px solid var(--primary); border-radius: 4px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: var(--primary); }
+        .checkbox.checked { background: #e0e7ff; }
+        footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="font-size: 2.5rem;">Implementation Plan: Security Hardening</h1>
+            <p style="color: var(--text-muted);">Củng cố bảo mật hệ thống thông qua validation chặt chẽ và chuẩn hóa Docker Non-root.</p>
+        </header>
+
+        <h2>1. Overview (Tổng quan)</h2>
+        <p>Dựa trên PRD (S1, S2, S3), module này giải quyết các rủi ro về tấn công SQL Injection, leo thang đặc quyền trong container và rò rỉ thông tin hệ thống. Đây là điều kiện tiên quyết (Blocker) trước khi triển khai lên môi trường Production.</p>
+
+        <h2>2. Các bước triển khai chi tiết</h2>
+        
+        <div class="step">
+            <h3>Bước 1: Kiểm soát SQL & Validation Chặt chẽ</h3>
+            <p><strong>Mục tiêu:</strong> Đảm bảo mọi câu lệnh SQL sinh ra bởi AI đều an toàn trước khi thực thi.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Audit hàm validate_sql trong Query Service.</li>
+                <li><strong>Tác vụ 2:</strong> Verify tính năng Hard Limit (LIMIT auto-append).</li>
+            </ul>
+            <div class="prompt-box">
+"Dựa trên mã nguồn tại services/query-service, hãy thực hiện Audit và nâng cấp hàm validate_sql. Đảm bảo chặn đứng các hành vi multi-statement và SQL injection. Ngoài ra, hãy kiểm tra logic tự động chèn LIMIT vào cuối câu lệnh SELECT. Kết quả: Query Service an toàn hơn."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 2: Hardening Docker & Non-root User</h3>
+            <p><strong>Mục tiêu:</strong> Giảm thiểu bề mặt tấn công bằng quyền user hạn chế.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Thiết lập USER appuser cho toàn bộ Dockerfiles.</li>
+                <li><strong>Tác vụ 2:</strong> Sanitize Error Messages tránh lộ thông tin nhạy cảm.</li>
+            </ul>
+            <div class="prompt-box">
+"Hãy kiểm tra toàn bộ Dockerfile trong workspace. Thực hiện tạo group/user 'appuser' và chuyển quyền thực thi sang user này (USER appuser). Đồng thời, cập nhật middleware xử lý lỗi để ẩn các thông tin kỹ thuật nhạy cảm khỏi response API. Kết quả: Docker images đạt chuẩn bảo mật Non-root."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 3: Trivy Security Scanning & Verification</h3>
+            <p><strong>Mục tiêu:</strong> Quét lỗ hổng bảo mật tự động trên các bản đóng gói.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Chạy Trivy Scan trên tất cả images.</li>
+                <li><strong>Tác vụ 2:</strong> Xử lý các lỗ hổng mức Critical/High.</li>
+            </ul>
+            <div class="prompt-box">
+"Sử dụng skill Trivy Security Scanning, hãy thực hiện quét bảo mật cho 4 images: frontend, gateway, nl2sql, query. Mục tiêu: Không còn lỗ hổng mức Critical nào tồn tại. Kết quả: Báo cáo scan Trivy sạch (Pass)."
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+        <header>
+            <h1>Progress Report: Security Hardening</h1>
+            <div class="meta">
+                <span class="badge badge-warning">Đang triển khai</span>
+                <span>Cập nhật: 16/05/2026</span>
+                <span>Tiến độ: 20%</span>
+            </div>
+        </header>
+
+        <h2>📈 Tiến trình tổng quan (Progress Overview)</h2>
+        <div class="step">
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong>Tổng số tác vụ:</strong> 5</li>
+                <li><strong>Đã hoàn thành:</strong> 1</li>
+            </ul>
+        </div>
+
+        <h2>📊 Chỉ số đánh giá (Evaluation Criteria)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chỉ số</th>
+                    <th>Mục tiêu</th>
+                    <th>Kết quả hiện tại</th>
+                    <th>Đạt yêu cầu?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Trivy Scan</strong></td>
+                    <td>0 Critical/High</td>
+                    <td>Chưa quét</td>
+                    <td>⏳</td>
+                </tr>
+                <tr>
+                    <td><strong>Non-root Status</strong></td>
+                    <td>100% services</td>
+                    <td>0/4</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>SQL Validation</strong></td>
+                    <td>100% patterns</td>
+                    <td>Đã có cơ bản</td>
+                    <td>⚠️</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ Các hạng mục đã hoàn thành (Done)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox checked">✓</div> <strong>SQL Validation:</strong> Hàm `validate_sql` đã bước đầu được triển khai.</li>
+        </ul>
+
+        <h2>🚧 Đang triển khai (In Progress)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <strong>Non-root Migration:</strong> Đang cập nhật Dockerfiles.</li>
+            <li><div class="checkbox"></div> <strong>Global Error Handler:</strong> Đang thiết kế sanitize logic.</li>
+        </ul>
+
+        <h2>🛑 Khó khăn & Khuyến nghị (Blockers & Recommendations)</h2>
+        <div class="step" style="border-left: 4px solid var(--danger);">
+            <strong>Trivy Requirement:</strong> Đây là blocker cho việc release. Cần pass 100% scan trước khi lên production.
+        </div>
+
+        <h2>📅 Kế hoạch tiếp theo (Next Steps)</h2>
+        <div class="step">
+            <ol>
+                <li>Thực hiện quét Trivy baseline.</li>
+                <li>Hoàn tất chuyển đổi Non-root cho các service backend.</li>
+                <li>Chạy bộ test case SQL Injection kiểm chứng validation.</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>Tài liệu được sinh bởi Antigravity AI dựa trên framework Indigo Premium.</p>
+        </footer>
+    </div>
+</body>
+</html>

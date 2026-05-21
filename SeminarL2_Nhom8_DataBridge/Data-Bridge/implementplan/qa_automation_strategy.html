@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Automation Strategy | Agent SQL Implementation Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --bg-dark: #0F172A;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+        }
+
+        h1, h2, h3, .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-light);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #FFF 0%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 40px 0 24px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(79, 70, 229, 0.4);
+        }
+
+        /* Workflow Steps */
+        .workflow-container {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .workflow-step {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .step-content {
+            flex-grow: 1;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step-content h3 {
+            margin-bottom: 8px;
+            color: var(--primary-light);
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .output-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+        }
+
+        .prompt-box {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            font-size: 14px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .prompt-box strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 4px;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tasks Table */
+        .task-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        .task-table th {
+            text-align: left;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .task-row {
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.2s;
+        }
+
+        .task-row td {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .task-row td:first-child {
+            border-left: 1px solid var(--border);
+            border-radius: 12px 0 0 12px;
+            font-weight: 600;
+        }
+
+        .task-row td:last-child {
+            border-right: 1px solid var(--border);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-todo { background: rgba(148, 163, 184, 0.1); color: #94A3B8; }
+        .status-progress { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+        .status-done { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+
+        /* Directives */
+        .directive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .directive-card {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .directive-card h4 {
+            color: var(--danger);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">QA EXPERT BLUEPRINT</span>
+            <h1>Chiến Lược Kiểm Thử Toàn Diện</h1>
+            <p class="subtitle">Quy trình vận hành Agentic Testing & Quality Assurance cho dự án Agent SQL dựa trên PRD Section 5.3</p>
+        </header>
+
+        <section id="agent-identity">
+            <div class="section-title">
+                <i>👤</i> <h2>Vai trò & Mục tiêu Agent</h2>
+            </div>
+            <div class="card">
+                <p>Tôi vận hành với tư cách là <strong>QA Expert Agent</strong>, một kỹ sư kiểm thử tự động hóa cấp cao. Nhiệm vụ cốt lõi là thiết lập một "Hàng rào chất lượng" (Quality Gate) không thể xuyên thủng, đảm bảo mọi dòng code trước khi lên Production đều phải vượt qua các bài kiểm tra khắc nghiệt nhất.</p>
+                <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="background: rgba(79, 70, 229, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <strong style="color: var(--primary-light);">Phạm vi</strong>
+                        <ul style="font-size: 14px; margin-top: 8px; list-style-position: inside; color: var(--text-muted);">
+                            <li>API Integration (Full Coverage)</li>
+                            <li>Performance & Load Stress</li>
+                            <li>Data-Driven Testing</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                        <strong style="color: var(--accent);">Cam kết</strong>
+                        <ul style="font-size: 14px; margin-top: 8px; list-style-position: inside; color: var(--text-muted);">
+                            <li>Pass rate: 100% (Integration)</li>
+                            <li>Báo cáo tự động minh bạch</li>
+                            <li>Không bỏ qua Edge cases</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skill-creation">
+            <div class="section-title">
+                <i>🛠️</i> <h2>Skill Creation: The Meta-Prompts</h2>
+            </div>
+            <p style="margin-bottom: 24px; color: var(--text-muted);">Đây là các câu lệnh "Khởi thủy" (Seed Prompts) mà bạn đã dùng để yêu cầu AI tự xây dựng các file <code>SKILL.md</code> trong hệ thống.</p>
+            
+            <div class="card">
+                <div style="margin-bottom: 24px;">
+                    <h4 style="color: var(--primary-light); margin-bottom: 12px;">1. Sinh Skill: test-case-generation</h4>
+                    <div class="prompt-box">
+                        <strong>💬 Meta-Prompt:</strong> 
+                        "Hãy tạo cho tui một Skill (file .md) chuyên về sinh test case tự động. Nó phải có khả năng đọc code router, PRD và xuất ra file test_cases.json theo cấu hình chuẩn để các Agent khác có thể đọc được."
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <h4 style="color: var(--primary-light); margin-bottom: 12px;">2. Sinh Skill: api-integration</h4>
+                    <div class="prompt-box">
+                        <strong>💬 Meta-Prompt:</strong> 
+                        "Viết một file SKILL.md hướng dẫn Agent dùng Pytest và Httpx để chạy integration test. Ràng buộc: PHẢI đọc file JSON test case, PHẢI dùng dependency_overrides để mock DB và xuất báo cáo markdown tại đường dẫn quy định."
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <h4 style="color: var(--primary-light); margin-bottom: 12px;">3. Sinh Skill: k6-performance</h4>
+                    <div class="prompt-box">
+                        <strong>💬 Meta-Prompt:</strong> 
+                        "Tạo Skill cho k6 load testing. Hướng dẫn Agent cách viết script JS và đặc biệt là cách sử dụng cờ --summary-export để lưu kết quả JSON cho các Agent báo cáo sau này sử dụng."
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--primary-light); margin-bottom: 12px;">4. Sinh Skill: test-reporting</h4>
+                    <div class="prompt-box">
+                        <strong>💬 Meta-Prompt:</strong> 
+                        "Viết Skill tổng hợp báo cáo. Nó phải biết cách đọc dữ liệu từ output của Pytest và file JSON của K6 để điền vào một Markdown Template chuẩn, giúp Admin có cái nhìn tổng quan về chất lượng."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow">
+            <div class="section-title">
+                <i>🔄</i> <h2>Quy Trình & Câu Lệnh Điều Khiển (Agentic Workflow)</h2>
+            </div>
+            <div class="workflow-container">
+                <!-- Step 1 -->
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Phân Tích & Sinh Test Case</h3>
+                        <div class="prompt-box">
+                            <strong>💬 User Prompt:</strong> 
+                            "Hãy đọc tài liệu API và mã nguồn Router, sau đó dùng skill <code>test-case-generation</code> để sinh ra tập dữ liệu kiểm thử (JSON) bao gồm cả các trường hợp lỗi (4xx, 5xx) và bảo mật injection."
+                        </div>
+                        <p>Sử dụng AI để quét mã nguồn, tự động nhận diện các tham số đầu vào và quy tắc ràng buộc để sinh ra tập dữ liệu kiểm thử tối ưu.</p>
+                        <span class="output-tag">📄 .agents/agents/test-case-generation/output/test_cases.json</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Thực Thi API Integration Test</h3>
+                        <div class="prompt-box">
+                            <strong>💬 User Prompt:</strong> 
+                            "Dựa trên file test_cases.json vừa sinh, hãy thực thi API Integration Test bằng Pytest. Hãy nhớ <code>dependency_overrides</code> để mock Database và gọi LLM thông qua Mock để đảm bảo an toàn dữ liệu."
+                        </div>
+                        <p>AI tự động viết mã kiểm thử Async, thực hiện Data-driven testing và xuất báo cáo chi tiết về tỷ lệ Pass/Fail.</p>
+                        <span class="output-tag">📄 .agents/agents/api-integration/output/api_test_results.md</span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Kiểm Thử Hiệu Năng (Load Test)</h3>
+                        <div class="prompt-box">
+                            <strong>💬 User Prompt:</strong> 
+                            "Hệ thống sắp có 50 người dùng đồng thời. Hãy viết script k6 để load test endpoint <code>/ask</code> trong 1 phút, kiểm tra xem P95 response có dưới 500ms không."
+                        </div>
+                        <p>AI thiết kế kịch bản k6 (JavaScript), thực thi Load/Stress test và phân tích các chỉ số tài nguyên hệ thống.</p>
+                        <span class="output-tag">📄 .agents/agents/k6-performance/output/k6_summary.json</span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Tổng Hợp Báo Cáo (Reporting)</h3>
+                        <div class="prompt-box">
+                            <strong>💬 User Prompt:</strong> 
+                            "Hãy thu thập tất cả kết quả từ Pytest và K6. So sánh với tiêu chuẩn QA trong PRD Section 5.3 và xuất ra file <code>test_report.md</code> để tui trình thầy."
+                        </div>
+                        <p>Bước cuối cùng, AI đóng vai trò như một quản lý chất lượng, tổng hợp dữ liệu thành báo cáo hoàn chỉnh, chỉ ra các rủi ro tiềm ẩn.</p>
+                        <span class="output-tag">📄 test_report.md (Final Artifact)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="prompt-engineering">
+            <div class="section-title">
+                <i>🧠</i> <h2>Phương Pháp Prompt Engineering</h2>
+            </div>
+            <div class="card">
+                <p>Để hệ thống Agent vận hành trơn tru, tui đã áp dụng kỹ thuật <strong>Role-Based Multi-Agent Prompting</strong>:</p>
+                <div style="margin-top: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border);">
+                        <code style="color: var(--primary-light);">1. Persona Prompting:</code> "Bạn là QA Expert Agent, tuân thủ đúng quy trình 4 bước..."
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border);">
+                        <code style="color: var(--primary-light);">2. Context Injection:</code> "Dựa trên PRD Section 5.3 và Skill Rule trong .agents/skills/..."
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+                        <code style="color: var(--primary-light);">3. Output Control:</code> "Lưu kết quả vào đúng đường dẫn /output/ để Skill sau có thể đọc được."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                        <strong>💬 Meta-Prompt:</strong> 
+                        "Viết Skill tổng hợp báo cáo. Nó phải biết cách đọc dữ liệu từ output của Pytest và file JSON của K6 để điền vào một Markdown Template chuẩn, giúp Admin có cái nhìn tổng quan về chất lượng."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tasks">
+            <div class="section-title">
+                <i>📋</i> <h2>Kế Hoạch Hành Động (Implementation Tasks)</h2>
+            </div>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Hạng mục</th>
+                        <th>Công nghệ</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="task-row">
+                        <td>API Integration Tests (All Endpoints)</td>
+                        <td>Pytest + Httpx</td>
+                        <td><span class="status-pill status-progress">Đang thực hiện</span></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Performance Tests (Load/Stress)</td>
+                        <td>k6 (JS)</td>
+                        <td><span class="status-pill status-todo">Chưa bắt đầu</span></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Automated Test Case Generation</td>
+                        <td>AI Agent</td>
+                        <td><span class="status-pill status-todo">Chưa bắt đầu</span></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Unit Tests cho <code>validate_sql</code></td>
+                        <td>Pytest (Static analysis)</td>
+                        <td><span class="status-pill status-progress">Đang thực hiện</span></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Unified Test Report Template</td>
+                        <td>Markdown / Jinja2</td>
+                        <td><span class="status-pill status-todo">Chưa bắt đầu</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="safety">
+            <div class="section-title">
+                <i>⚠️</i> <h2>Nguyên Tắc Tối Thượng (Guiding Principles)</h2>
+            </div>
+            <div class="directive-grid">
+                <div class="directive-card">
+                    <h4>🔒 An Toàn Dữ Liệu</h4>
+                    <p style="font-size: 14px; color: var(--text-muted);">Tuyệt đối không gọi DB thật trong Integration Test. Sử dụng Fixtures và Mocking để bảo vệ tính toàn vẹn của dữ liệu Production.</p>
+                </div>
+                <div class="directive-card">
+                    <h4>🔗 Tính Liên Kết</h4>
+                    <p style="font-size: 14px; color: var(--text-muted);">Dữ liệu phải chảy xuyên suốt (Data Pipeline). Output của bước sinh Test Case là input duy nhất của bước chạy Test.</p>
+                </div>
+                <div class="directive-card">
+                    <h4>🛑 Zero-Failure Policy</h4>
+                    <p style="font-size: 14px; color: var(--text-muted);">Theo PRD 5.3: Bất kỳ một lỗi Integration nào cũng là blocker cho quá trình Deploy. Không có ngoại lệ cho code "vẫn chạy được".</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Agent SQL Project | Generated by Antigravity AI</p>
+            <p style="margin-top: 8px; opacity: 0.5;">Conversation ID: 6fd35007-c558-4762-afa4-5fa072293a5f</p>
+        </footer>
+    </div>
+</body>
+</html>

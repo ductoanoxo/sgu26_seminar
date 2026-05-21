@@ -1,0 +1,10 @@
+# Ignore any environment files containing secrets
+.env
+.env.*
+*.env
+.env.local
+.env.*.local
+# Node modules and typical artifacts (optional)
+node_modules/
+dist/
+build/

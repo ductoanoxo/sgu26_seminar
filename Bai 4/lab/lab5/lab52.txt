@@ -1,0 +1,23 @@
+CONTEXT: You will be provided with a failing Python unit test traceback
+enclosed with {{{ TRACEBACK }}}.
+TASK: Explain why the unit test is failing.
+TRACEBACK: {{{
+python -m unittest ch5/labs/lab52_singleton.py
+F
+======================================================================
+FAIL: test_singleton_behavior_should_return_same_instance (ch5.labs.
+lab52_singleton.TestSingleton.test_singleton_behavior_should_return_same_
+instance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+File "supercharge/ch5/labs/lab52.py", line 26, in test_singleton_
+behavior_should_return_same_instance
+self.assertEqual(A(2), A())
+AssertionError: TestS[13 chars]_singleton_behavior_should_return_same_
+instance.<locals>.A(a=2) != TestS[13 chars]_singleton_behavior_should_
+return_same_instance.<locals>.A(a=0)
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+FAILED (failures=1)
+}}}
+EXPLANATION:

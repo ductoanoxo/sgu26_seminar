@@ -1,0 +1,367 @@
+"""
+LAB 15: IMAGE CAPTURE GUIDELINES
+================================
+
+Hướng dẫn chụp ảnh chi tiết cho thư mục Lab/lab15/image/
+
+Tổng cộng: ~24 ảnh cần chụp (PNG format)
+Mục đích: Tài liệu hóa output và học tập
+
+
+=== LAB 15.1: BASIC DECORATORS (6 ảnh) ===
+
+1. "lab151_01_code_overview.png"
+   📍 File: lab151_basic_decorators.py
+   🎯 Chụp: Toàn bộ file (scroll qua đầu đến cuối)
+   📋 Lý do: Hiển thị cấu trúc decorator cơ bản
+   ⚡ Command: cat lab151_basic_decorators.py
+
+2. "lab151_02_run_output.png"
+   📍 File: Lab 15.1 output
+   🎯 Chụp: Terminal output khi chạy
+       python lab151_basic_decorators.py
+   📋 Output bao gồm:
+      - Logger decorators
+      - Wrapper examples
+      - Multiple decorators
+   💾 Expected: 50+ dòng logs
+
+3. "lab151_03_decorator_anatomy.png"
+   📍 File: lab151_basic_decorators.py (lines 30-60)
+   🎯 Chụp: Hàm logger_decorator (cơ bản nhất)
+   📋 Lý do: Giải thích @wraps và wrapper structure
+   ⚡ Highlight: Lines 30-60
+
+4. "lab151_04_functools_wraps_importance.png"
+   📍 File: lab151_basic_decorators.py (lines 80-110)
+   🎯 Chụp: Phần so sánh with/without @wraps
+   📋 Output hiển thị sự khác biệt
+   ⚡ Highlight: __name__ preservation
+
+5. "lab151_05_multiple_decorators.png"
+   📍 File: Lab 15.1 test output
+   🎯 Chụp: Khi chạy hàm có 2-3 decorators
+       output của stacked_example_function()
+   📋 Thấy thứ tự thực thi
+   💾 Expected: 10-15 log lines
+
+6. "lab151_06_best_practices_table.png"
+   📍 VS Code
+   🎯 Chụp: Phần Best Practices từ README.md
+   📋 Bảng so sánh các cách viết decorator
+   📌 Pin: Print README.md section
+
+
+=== LAB 15.2: TIMING DECORATORS (6 ảnh) ===
+
+7. "lab152_01_code_timing.png"
+   📍 File: lab152_timing_decorator.py
+   🎯 Chụp: Toàn bộ file (overview)
+   📋 Các decorator loại: simple, advanced, parameterized
+
+8. "lab152_02_basic_timer_output.png"
+   📍 Terminal
+   🎯 Chụp: Output của timer_simple_decorator test
+       python lab152_timing_decorator.py
+   📋 Hiển thị: "Execution time: X.XXXX seconds"
+   ⚡ Chạy function chậm (sleep 1+ seconds)
+
+9. "lab152_03_advanced_timer_output.png"
+   📍 Terminal
+   🎯 Chụp: Output của timer_advanced_decorator test
+   📋 Hiển thị: Thời gian với units (seconds, ms)
+   ⚡ Chạy vài function khác nhau
+
+10. "lab152_04_parameterized_timer.png"
+    📍 File: lab152_timing_decorator.py (lines 80-120)
+    🎯 Chụp: Code của timer_advanced function
+    📋 Hiển thị: Parameterized decorator pattern
+    ⚡ Highlight: unit parameter, nested function
+
+11. "lab152_05_performance_comparison.png"
+    📍 Terminal
+    🎯 Chụp: So sánh timing 5-10 function khác nhau
+    📋 Output bao gồm:
+        - Function name
+        - Execution time
+        - Unit conversion
+    ⚡ Chạy: python lab152_timing_decorator.py
+
+12. "lab152_06_timing_use_cases.png"
+    📍 VS Code (README.md section)
+    🎯 Chụp: Use cases section
+    📋 Khi nào dùng timing decorators
+    📌 Real-world examples
+
+
+=== LAB 15.3: VALIDATION DECORATORS (6 ảnh) ===
+
+13. "lab153_01_code_validation.png"
+    📍 File: lab153_validation_decorator.py
+    🎯 Chụp: Toàn bộ validator code overview
+    📋 Decorator loại: type, range, custom
+
+14. "lab153_02_type_validation_success.png"
+    📍 Terminal
+    🎯 Chụp: Test khi argument type đúng
+    📋 Output: "✅ TYPE VALIDATION TEST"
+    ⚡ Chạy: python lab153_validation_decorator.py -t success
+
+15. "lab153_03_type_validation_error.png"
+    📍 Terminal
+    🎯 Chụp: Test khi argument type sai
+    📋 Error message hiển thị:
+        - TypeError
+        - Expected type
+        - Actual type
+    ⚡ Chạy: python lab153_validation_decorator.py -t error
+
+16. "lab153_04_range_validation.png"
+    📍 Terminal
+    🎯 Chụp: Range validation test output
+    📋 Hiển thị:
+        - Valid values
+        - Out-of-range errors
+        - Boundary cases
+    ⚡ Chạy: python lab153_validation_decorator.py -r
+
+17. "lab153_05_custom_validation.png"
+    📍 Terminal
+    🎯 Chụp: Custom validator test
+    📋 Ví dụ: is_even, is_positive, etc.
+    ⚡ Multiple custom validators
+
+18. "lab153_06_combined_validation.png"
+    📍 Terminal
+    🎯 Chụp: Khi combine nhiều validators
+    📋 Hiển thị thứ tự kiểm tra
+    ⚡ Error handling flow
+
+
+=== LAB 15.4: GEMINI INTEGRATION (3 ảnh) ===
+
+19. "lab154_01_gemini_setup.png"
+    📍 VS Code Settings
+    🎯 Chụp: .env file configuration
+    📋 Hiển thị: GEMINI_API_KEY=AIzaSy...
+    ⚠️ Blur hoặc che key (chỉ hiển thị 10 ký tự cuối)
+
+20. "lab154_02_generated_decorators_output.png"
+    📍 Terminal
+    🎯 Chụp: Output khi chạy
+        python lab154_gemini_integration.py
+    📋 Hiển thị:
+        - "Calling Gemini API..." messages
+        - Generated decorator code
+        - Saved files notification
+    ⚡ 2-3 decorators generated
+
+21. "lab154_03_gemini_generated_code.png"
+    📍 VS Code - lab154_cache_decorator.py
+    🎯 Chụp: Một ví dụ decorator sinh bởi Gemini
+    📋 Hiển thị code quality
+    ⚡ Highlight: docstring, implementation
+
+
+=== LAB 15.5: FIZZBUZZ DECORATORS (2 ảnh) ===
+
+22. "lab155_01_multiple_decorators_output.png"
+    📍 Terminal
+    🎯 Chụp: Output khi chạy
+        python lab155_fizzbuzz_decorators.py
+    📋 Hiển thị:
+        - Decorator order explanation
+        - FizzBuzz output (1-15)
+        - Logging messages
+    ⚡ Chạy test 1
+
+23. "lab155_02_error_handling.png"
+    📍 Terminal
+    🎯 Chụp: Error test outputs
+    📋 Hiển thị:
+        - TypeError log
+        - ValueError log
+        - Error messages from validators
+    ⚡ Chạy test 2-3
+
+
+=== LAB 15.6: GEMINI ANALYSIS (3 ảnh) ===
+
+24. "lab156_01_analysis_output.png"
+    📍 Terminal
+    🎯 Chụp: Output khi chạy
+        python lab156_gemini_analysis.py
+    📋 Hiển thị:
+        - Sample decorator code
+        - "Explain" output từ Gemini
+        - First 20 lines of analysis
+    ⚡ Scroll để hiển thị analysis process
+
+25. "lab156_02_issues_found.png"
+    📍 File: lab156_issues.txt
+    🎯 Chụp: Issues identified by Gemini
+    📋 Hiển thị:
+        - Critical issues
+        - Performance concerns
+        - Recommendations
+    💾 VS Code preview
+
+26. "lab156_03_improved_decorator.png"
+    📍 File: lab156_improved.py
+    🎯 Chụp: Improved version code
+    📋 Hiển thị: Enhanced decorator with fixes
+    📌 Highlight: New features thêm vào
+
+
+=== LAB 15.7: COMPARISON (3 ảnh) ===
+
+27. "lab157_01_comparison_table.png"
+    📍 Terminal
+    🎯 Chụp: Output bảng so sánh
+        python lab157_comparison.py
+    📋 Hiển thị:
+        - Criteria column
+        - Student version column
+        - Gemini version column
+    ⚡ First 10 rows of table
+
+28. "lab157_02_benchmark_results.png"
+    📍 Terminal
+    🎯 Chụp: Benchmark comparison results
+    📋 Hiển thị:
+        - Fibonacci(20) timing
+        - Cache stats
+        - Speedup calculations
+    ⚡ Performance comparison
+
+29. "lab157_03_analysis_report.png"
+    📍 VS Code - lab157_analysis_report.md
+    🎯 Chụp: Markdown report first page
+    📋 Hiển thị:
+        - Functionality comparison
+        - Code quality metrics
+        - Lessons learned
+    📌 Scroll preview
+
+
+=== BONUS: LAB 15 REFERENCE (3 ảnh) ===
+
+30. "lab15_00_folder_structure.png"
+    📍 VS Code Explorer
+    🎯 Chụp: Lab 15 folder tree
+    📋 Hiển thị:
+        📁 lab15/
+        ├─ README.md
+        ├─ .env
+        ├─ lab151_*.py
+        ├─ lab152_*.py
+        ├─ ... (all 7 labs)
+        └─ image/
+
+31. "lab15_01_README_overview.png"
+    📍 VS Code - README.md
+    🎯 Chụp: README phần giới thiệu (đầu file)
+    📋 Hiển thị:
+        - Lab titles
+        - Decorator theory
+        - Learning objectives
+    📌 Scroll to top
+
+32. "lab15_02_gemini_api_setup.png"
+    📍 VS Code - README.md
+    🎯 Chụp: Phần "Gemini API Setup"
+    📋 Hướng dẫn setup API key
+    📌 Xem phần installation
+
+
+==========================================
+CHỤP HỲ: TIPS & CONVENTIONS
+==========================================
+
+📸 Format & Naming:
+   - Format: PNG
+   - Resolution: 1920x1080 (standard screen)
+   - Naming: lib15_## OR lab15_NNN_description.png (lowercase)
+   - Example: lab151_01_code_overview.png
+
+🎨 Code Display:
+   - Font size: 14-16pt (readable)
+   - Theme: Dark (recommended) hoặc Light
+   - Show line numbers: ✅ Yes
+   - Word wrap: ✅ Yes cho readability
+
+📝 Terminal:
+   - Clear before screenshot: clear (Linux) hoặc cls (Windows)
+   - Show full path: export PS1="\w$ " (bash)
+   - Font: Monospace 14pt
+   - Background: Dark (contrast)
+
+🔑 Important Output:
+   - Always capture timestamps
+   - Include error messages (if applicable)
+   - Show statistics/metrics at end
+   - Scroll to show important parts
+
+⚠️ Security:
+   - BLUR or HIDE: API keys, passwords
+   - Use placeholder: ...
+   - Show first 10 + last 10 characters only
+   - Example: AIzaSy...GpmR7O
+
+📐 Composition:
+   - Include full file path/name in screenshot
+   - Show window title bar
+   - Include line numbers for code
+   - Include timestamps for terminal
+
+✏️ Annotations (Optional):
+   - Draw arrows to important code
+   - Highlight error messages
+   - Circle critical output
+   - Add brief labels
+
+📋 Quality Checklist:
+   - ✅ Image is sharp and readable
+   - ✅ Text is not cut off
+   - ✅ Relevant parts are visible
+   - ✅ No blur or compression artifacts
+   - ✅ Consistent filename naming
+   - ✅ Organized in image/ folder
+
+
+==========================================
+IMPLEMENTATION ORDER
+==========================================
+
+Recommended order to take screenshots:
+1. Folder structure overview (lab15_00)
+2. README overview (lab15_01, lab15_02)
+3. Lab 15.1 (Screenshot 1-6)
+4. Lab 15.2 (Screenshot 7-12)
+5. Lab 15.3 (Screenshot 13-18)
+6. Lab 15.4 (Screenshot 19-21)
+7. Lab 15.5 (Screenshot 22-23)
+8. Lab 15.6 (Screenshot 24-26)
+9. Lab 15.7 (Screenshot 27-29)
+
+Total Time: ~60-90 minutes
+
+
+==========================================
+TOOLS TO HELP WITH SCREENSHOTS
+==========================================
+
+Windows 10/11:
+   - Win+Shift+S: Snipping Tool
+   - Win+G: Xbox Game Bar
+   - VS Code: Screenshot extension
+
+PowerShell to organize:
+   - Get-ChildItem *.png | Measure-Object
+   - Move-Item *.png .\image\
+
+Python to batch process:
+   - from PIL import Image
+   - img = Image.open('screenshot.png')
+   - img.resize((1920, 1080)).save('resized.png')
+"""

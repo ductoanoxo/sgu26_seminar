@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://wiggly-unfiducial-lizette.ngrok-free.dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - ngrok
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command: http n8n:5678 --url=wiggly-unfiducial-lizette.ngrok-free.dev
+    environment:
+      - NGROK_AUTHTOKEN=38YcY9HIEeuLvUm0LXkw2hLX9EI_89UhRW2DanWREzGVzZ5XR
+    ports:
+      - "4040:4040" 
+volumes:
+  n8n_data:
+

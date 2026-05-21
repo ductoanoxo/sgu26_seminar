@@ -1,0 +1,352 @@
+"""
+LAB 15: QUICK REFERENCE & CHECKLIST
+====================================
+
+Danh sách kiểm tra nhanh cho Lab 15
+
+
+=== 📋 FILES CREATED ===
+
+Structure:
+    D:\SGU\Seminar\Bai 4\sgu_seminar_lab4_genAI\Lab\lab15\
+    ├── README.md                           ✅ Created
+    ├── .env                                ✅ Created (contains GEMINI_API_KEY)
+    ├── IMAGE_CAPTURE_GUIDE.txt             ✅ Created
+    ├── QUICK_REFERENCE.txt                 ✅ This file
+    │
+    ├── 📄 FOUNDATION LABS (No API):
+    ├── lab151_basic_decorators.py          ✅ Created (151 lines)
+    ├── lab152_timing_decorator.py          ✅ Created (197 lines)
+    ├── lab153_validation_decorator.py      ✅ Created (214 lines)
+    │
+    ├── 🤖 GEMINI INTEGRATION LABS:
+    ├── lab154_gemini_integration.py        ✅ Created (285 lines)
+    ├── lab155_fizzbuzz_decorators.py       ✅ Created (290 lines)
+    ├── lab156_gemini_analysis.py           ✅ Created (310 lines)
+    ├── lab157_comparison.py                ✅ Created (368 lines)
+    │
+    └── 📸 IMAGE FOLDER:
+        └── image/                          ✅ Created (empty, ready for 32 images)
+
+
+=== 🚀 HOW TO RUN EACH LAB ===
+
+Lab 15.1 - Basic Decorators:
+    $ cd Lab\lab15
+    $ python lab151_basic_decorators.py
+    ✅ No API required
+    ⏱️ Runtime: ~2 seconds
+    📊 Output: Decorator demonstrations
+
+
+Lab 15.2 - Timing Decorators:
+    $ python lab152_timing_decorator.py
+    ✅ No API required
+    ⏱️ Runtime: ~3-5 seconds (includes sleep)
+    📊 Output: Timing measurements
+
+
+Lab 15.3 - Validation Decorators:
+    $ python lab153_validation_decorator.py
+    ✅ No API required
+    ⏱️ Runtime: ~2 seconds
+    📊 Output: Type/range validation tests
+
+
+Lab 15.4 - Gemini Generation:
+    $ python lab154_gemini_integration.py
+    🔑 Requires: GEMINI_API_KEY in .env
+    ⏱️ Runtime: ~5-15 seconds (depends on API)
+    📊 Output: Generated decorators in lab154_*.py files
+    💡 Demo Mode: Set LAB15_DEMO_MODE=1 to skip API
+
+
+Lab 15.5 - FizzBuzz + Multiple Decorators:
+    $ python lab155_fizzbuzz_decorators.py
+    ✅ No API required
+    ⏱️ Runtime: ~2 seconds
+    📊 Output: FizzBuzz with nested decorators + error tests
+
+
+Lab 15.6 - Gemini Analysis:
+    $ python lab156_gemini_analysis.py
+    🔑 Requires: GEMINI_API_KEY in .env
+    ⏱️ Runtime: ~10-20 seconds
+    📊 Output: 
+        - lab156_explanation.txt
+        - lab156_issues.txt
+        - lab156_improved.py
+        - lab156_tests.py
+    💡 Demo Mode: Set LAB15_DEMO_MODE=1 to skip API
+
+
+Lab 15.7 - Comparison:
+    $ python lab157_comparison.py
+    ✅ No API required
+    ⏱️ Runtime: ~30-60 seconds (Fibonacci benchmarks)
+    📊 Output:
+        - Comparison table
+        - Benchmark results
+        - lab157_analysis_report.md
+    📊 Metrics: Hit/miss rates, speedup calculations
+
+
+=== 🔑 GEMINI API KEY SETUP ===
+
+✅ Already done:
+   - .env file created with GEMINI_API_KEY
+   - Key stored: AIzaSyCTYxrHmmPoA_h_OUvtZyr4zajmpGpmr7o
+
+If you need to regenerate:
+   1. Go to: https://ai.google.dev
+   2. Click "Get API Key"
+   3. Update .env: GEMINI_API_KEY=your_key_here
+   4. Restart Python environment
+
+
+=== 📦 REQUIRED PACKAGES ===
+
+Check installed:
+    $ pip freeze | grep -E "google|openai|dotenv"
+
+If missing, install:
+    $ pip install google-generativeai python-dotenv
+
+Full requirements for lab 15:
+    - google-generativeai >= 0.3.0
+    - python-dotenv >= 1.0.0
+    - Python >= 3.10
+
+
+=== 🧪 TESTING CHECKLIST ===
+
+Before submitting, verify:
+
+□ Lab 15.1 - Basic Decorators
+  ✓ Runs without error
+  ✓ Shows logging output
+  ✓ Multiple decorators demo working
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.2 - Timing
+  ✓ Runs without error
+  ✓ Timing values shown
+  ✓ Parameterized decorator working
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.3 - Validation
+  ✓ Runs without error
+  ✓ Type validation working
+  ✓ Range validation working
+  ✓ Error cases handled
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.4 - Gemini Integration
+  ✓ API key loaded from .env
+  ✓ Decorators generated
+  ✓ Files saved (lab154_*.py)
+  ✓ Demo mode works (LAB15_DEMO_MODE=1)
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.5 - Multiple Decorators
+  ✓ Runs without error
+  ✓ Multiple decorators applied
+  ✓ Error handling working
+  ✓ Order of execution clear
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.6 - Gemini Analysis
+  ✓ Analysis files created
+  ✓ Explanation generated
+  ✓ Issues identified
+  ✓ Improvements suggested
+  ✓ Tests generated
+  ✓ Timestamp: [TIME]
+
+□ Lab 15.7 - Comparison
+  ✓ Comparison table shown
+  ✓ Benchmark results displayed
+  ✓ Report generated
+  ✓ Performance metrics calculated
+  ✓ Analysis saved to file
+  ✓ Timestamp: [TIME]
+
+□ Image Folder
+  ✓ lab15/image/ folder exists
+  ✓ Ready to receive 32 screenshots
+  ✓ PNG files named correctly
+
+□ Documentation
+  ✓ README.md complete
+  ✓ IMAGE_CAPTURE_GUIDE.txt ready
+  ✓ QUICK_REFERENCE.txt complete
+
+
+=== 📊 QUICK STATS ===
+
+Total Code Lines:
+    - lab151: 151 lines
+    - lab152: 197 lines
+    - lab153: 214 lines
+    - lab154: 285 lines
+    - lab155: 290 lines
+    - lab156: 310 lines
+    - lab157: 368 lines
+    ────────────────
+    Total: 1,815 lines of Python code
+
+Documentation:
+    - README.md: 451 lines
+    - IMAGE_CAPTURE_GUIDE.txt: 350+ lines
+    - QUICK_REFERENCE.txt: This file
+
+Total Package:
+    - 7 Python labs
+    - 3 README/guide files
+    - 1 config file (.env)
+    - 1 image folder (ready for 32 images)
+
+
+=== 💡 LEARNING OUTCOMES ===
+
+After completing Lab 15, you'll understand:
+
+✅ Decorator Patterns:
+   - Basic decorator syntax
+   - @wraps usage
+   - Parameterized decorators
+   - Decorator stacking
+   - Instance vs function decorators
+
+✅ Google Gemini API:
+   - Setup and configuration
+   - Basic text generation
+   - Error handling
+   - Demo/fallback modes
+
+✅ Advanced Concepts:
+   - LRU caching
+   - Cache statistics
+   - Timing decorators
+   - Type validation
+   - Custom validators
+
+✅ Code Analysis:
+   - Comparing solutions
+   - Performance benchmarking
+   - Code quality assessment
+   - Best practices
+
+
+=== 🆘 TROUBLESHOOTING ===
+
+Problem: "ModuleNotFoundError: No module named 'google'"
+Solution: pip install google-generativeai
+
+Problem: "GEMINI_API_KEY not found"
+Solution: Check .env file in Lab/lab15/ folder
+
+Problem: "401 Unauthorized" from Gemini API
+Solution: 
+   1. Verify API key in .env
+   2. Check key isn't expired
+   3. Regenerate at https://ai.google.dev
+
+Problem: Demo mode shows even with valid API
+Solution: Delete .lab15_quota_exhausted marker file
+
+Problem: Decorator tests fail
+Solution: 
+   1. Check Python version >= 3.10
+   2. Verify functools module
+   3. Check import statements
+
+Problem: Import errors in generated files
+Solution:
+   1. Run in Lab/lab15/ directory
+   2. Check PYTHONPATH
+   3. Install missing packages
+
+
+=== 📞 SUPPORT RESOURCES ===
+
+Official Docs:
+    - Google Generative AI: https://ai.google.dev/docs
+    - Python Decorators: https://docs.python.org/3/glossary.html#term-decorator
+    - functools: https://docs.python.org/3/library/functools.html
+
+Example Code:
+    - See README.md for examples
+    - Each lab #.py file has comprehensive comments
+    - Test functions demonstrate usage
+
+
+=== ✅ SUBMISSION CHECKLIST ===
+
+Final verification before submission:
+
+🎯 Code Quality:
+   □ All 7 Python files exist
+   □ No syntax errors
+   □ Comments in code
+   □ Functions documented
+   □ Type hints used
+
+🎯 Functionality:
+   □ All labs run successfully
+   □ Expected outputs produced
+   □ Error handling working
+   □ Demo fallback mode working
+
+🎯 Documentation:
+   □ README.md comprehensive
+   □ Image capture guide complete
+   □ Quick reference ready
+   □ File organization clear
+
+🎯 Assets:
+   □ .env properly configured
+   □ image/ folder created
+   □ README in place
+   □ Source files organized
+
+🎯 Final Test:
+   □ Run: python lab151_basic_decorators.py ✓
+   □ Run: python lab152_timing_decorator.py ✓
+   □ Run: python lab153_validation_decorator.py ✓
+   □ Run: python lab154_gemini_integration.py ✓
+   □ Run: python lab155_fizzbuzz_decorators.py ✓
+   □ Run: python lab156_gemini_analysis.py ✓
+   □ Run: python lab157_comparison.py ✓
+
+
+=== 🎓 VỀ CHƯƠNG 15 ===
+
+Chương 15 tập trung vào:
+1. **Decorator Pattern**: Lập trình chức năng tiên tiến
+2. **Google Gemini API**: Sử dụng AI trong Python
+3. **Code Analysis**: So sánh mã tự viết vs AI sinh
+4. **Best Practices**: Khi nào dùng decorators/AI
+
+Mục tiêu:
+✅ Thực hành viết decorators phức tạp
+✅ Tích hợp AI API (Gemini)
+✅ Đánh giá mã do AI sinh
+✅ Kết hợp human + AI skills
+
+
+=== 📝 NOTES ===
+
+- Tất cả files đã được tạo
+- Gemini API key đã được setup
+- Image folder ready (chờ 32 screenshots)
+- Tất cả decorators chạy demo mode bình thường
+- Với API key, sẽ sinh code thực từ Gemini
+
+Next: Chụp ảnh theo IMAGE_CAPTURE_GUIDE.txt
+
+
+Last Updated: 2024
+Version: 1.0
+Status: ✅ COMPLETE & READY FOR USE
+"""

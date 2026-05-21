@@ -1,0 +1,13 @@
+
+This cache decorator implements a simple memoization pattern:
+
+1. **Cache Dictionary**: Maintains a dictionary to store previous results
+2. **Key Generation**: Uses (args, kwargs) as the cache key
+3. **Hit/Miss Logic**: Checks if result is cached, if yes returns it, else computes
+4. **functools.wraps**: Preserves the original function metadata
+
+Potential Issues:
+- Memory leak for infinite argument combinations
+- Not thread-safe for concurrent calls
+- Cache never expires
+- No size limit on cache dictionary

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan & Progress Report: Kết nối Dữ liệu Động</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f5f3ff;
+            --card-bg: #ffffff;
+            --text-main: #1e1b4b;
+            --text-muted: #475569;
+            --danger: #ef4444;
+            --success: #10b981;
+            --accent: #f8fafc;
+            --warning: #f59e0b;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 40px auto; padding: 40px; background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        header { border-bottom: 2px solid #eef2ff; margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 0 0 10px 0; }
+        .meta { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-muted); }
+        .badge { padding: 4px 12px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+        .badge-purple { background: #e0e7ff; color: var(--primary); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        h2 { font-size: 1.5rem; margin-top: 40px; border-left: 4px solid var(--primary); padding-left: 15px; color: var(--text-main); }
+        .step { margin-bottom: 30px; padding: 24px; background: #fafafa; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .prompt-box { background: #0f172a; color: #f1f5f9; padding: 20px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; position: relative; margin-top: 15px; border-left: 4px solid var(--primary); }
+        .prompt-box::before { content: "PROMPT GỬI AI AGENT"; position: absolute; top: -10px; right: 15px; background: var(--primary); color: white; padding: 2px 10px; font-size: 0.7rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { display: flex; align-items: center; gap: 12px; padding: 10px; background: #fff; border: 1px solid #f1f5f9; margin-bottom: 8px; border-radius: 8px; }
+        .checkbox { width: 18px; height: 18px; border: 2px solid var(--primary); border-radius: 4px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: var(--primary); }
+        .checkbox.checked { background: #e0e7ff; }
+        footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="font-size: 2.5rem;">Implementation Plan: Kết nối Dữ liệu Động</h1>
+            <p style="color: var(--text-muted);">Xây dựng cơ chế nhập liệu và quản lý kết nối database an toàn, linh hoạt.</p>
+        </header>
+
+        <h2>1. Overview (Tổng quan)</h2>
+        <p>Module Kết nối Dữ liệu Động là cửa ngõ đầu vào của hệ thống Agent_SQL, cho phép người dùng kết nối với các nguồn dữ liệu bên ngoài hoặc tải lên các tệp tin (CSV, JSON). Trọng tâm là đảm bảo trích xuất schema tự động và bảo mật thông tin kết nối nhạy cảm.</p>
+
+        <h2>2. Các bước triển khai chi tiết</h2>
+        
+        <div class="step">
+            <h3>Bước 1: Verify & Hoàn thiện luồng Connection String</h3>
+            <p><strong>Mục tiêu:</strong> Kết nối thành công và trích xuất Metadata tự động.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Backend thực hiện kết nối thử (Dry Run).</li>
+                <li><strong>Tác vụ 2:</strong> Trích xuất cấu trúc bảng và cập nhật Metadata cho AI.</li>
+            </ul>
+            <div class="prompt-box">
+"Hãy kiểm tra và hoàn thiện service kết nối dữ liệu. Khi nhận Connection String từ Frontend, Backend cần sử dụng SQLAlchemy để liệt kê các bảng và cột (Schema Extraction). Thông tin này phải được lưu vào Metadata store để AI có thể hiểu cấu trúc DB. Đầu ra: Luồng kết nối DB hoạt động end-to-end."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 2: Xử lý Upload CSV/JSON & Bảng tạm</h3>
+            <p><strong>Mục tiêu:</strong> Phân tích dữ liệu từ tệp tin tải lên.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Hoàn thiện UI upload trong component DataImport.</li>
+                <li><strong>Tác vụ 2:</strong> Parse file và tạo Virtual Tables để truy vấn SQL.</li>
+            </ul>
+            <div class="prompt-box">
+"Xây dựng logic xử lý upload tệp tin CSV/JSON. Backend nhận file, sử dụng thư viện Pandas để parse và tạo một bảng ảo (Virtual Table) trong bộ nhớ. Sau đó, cập nhật danh sách bảng hiển thị ở SQL Editor để người dùng có thể truy vấn ngay. Đầu ra: Chức năng phân tích file hoạt động."
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Bước 3: Bảo mật & Kiểm soát (Security & Control)</h3>
+            <p><strong>Mục tiêu:</strong> Mã hóa thông tin và giới hạn phạm vi truy cập.</p>
+            <ul>
+                <li><strong>Tác vụ 1:</strong> Mã hóa mật khẩu Connection String tại Backend.</li>
+                <li><strong>Tác vụ 2:</strong> Schema Masking - Admin chọn bảng/cột được phép truy cập.</li>
+                <li><strong>Tác vụ 3:</strong> Thiết lập Timeout và Max Rows giới hạn từ UI.</li>
+            </ul>
+            <div class="prompt-box">
+"Thực hiện mã hóa Password trong Connection String bằng thư viện Cryptography trước khi lưu vào DB. Xây dựng logic Schema Masking: Chỉ gửi Metadata của các bảng mà Admin đã đánh dấu 'Allowed' cho LLM. Ngoài ra, hãy áp dụng LIMIT 1000 và TIMEOUT 30s cho mọi truy vấn. Đầu ra: Hệ thống kết nối dữ liệu an toàn và có kiểm soát."
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+        <header>
+            <h1>Progress Report: Kết nối Dữ liệu Động</h1>
+            <div class="meta">
+                <span class="badge badge-warning">Đang triển khai</span>
+                <span>Cập nhật: 16/05/2026</span>
+                <span>Tiến độ: 20%</span>
+            </div>
+        </header>
+
+        <h2>📈 Tiến trình tổng quan (Progress Overview)</h2>
+        <div class="step">
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong>Tổng số tác vụ:</strong> 5</li>
+                <li><strong>Đã hoàn thành:</strong> 1</li>
+            </ul>
+        </div>
+
+        <h2>📊 Chỉ số đánh giá (Evaluation Criteria)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chỉ số</th>
+                    <th>Mục tiêu</th>
+                    <th>Kết quả hiện tại</th>
+                    <th>Đạt yêu cầu?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Connection Success</strong></td>
+                    <td>100%</td>
+                    <td>70% (Đang fix)</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Parsing Success</strong></td>
+                    <td>100% (Standard)</td>
+                    <td>90%</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td><strong>Encryption Status</strong></td>
+                    <td>100% encrypted</td>
+                    <td>0%</td>
+                    <td>❌</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ Các hạng mục đã hoàn thành (Done)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox checked">✓</div> <strong>Frontend UI:</strong> Đã có component `DataImport.tsx` cơ bản (10KB).</li>
+        </ul>
+
+        <h2>🚧 Đang triển khai (In Progress)</h2>
+        <ul class="checklist">
+            <li><div class="checkbox"></div> <strong>Schema Extraction:</strong> Đang verify luồng backend đọc metadata.</li>
+            <li><div class="checkbox"></div> <strong>Security Module:</strong> Đang thiết kế giải pháp mã hóa dữ liệu.</li>
+        </ul>
+
+        <h2>🛑 Khó khăn & Khuyến nghị (Blockers & Recommendations)</h2>
+        <div class="step" style="border-left: 4px solid var(--danger);">
+            <strong>Schema Mapping:</strong> Cần chuẩn hóa việc map data types giữa các DB khác nhau về Metadata chung cho AI.
+        </div>
+
+        <h2>📅 Kế hoạch tiếp theo (Next Steps)</h2>
+        <div class="step">
+            <ol>
+                <li>Triển khai mã hóa thông tin kết nối nhạy cảm.</li>
+                <li>Xây dựng giao diện Schema Masking (F2) cho Admin.</li>
+                <li>Tích hợp các tham số giới hạn (Timeout/Max Rows) vào luồng thực thi.</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>Tài liệu được sinh bởi Antigravity AI dựa trên framework Indigo Premium.</p>
+        </footer>
+    </div>
+</body>
+</html>

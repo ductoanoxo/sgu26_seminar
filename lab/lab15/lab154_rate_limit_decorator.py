@@ -1,0 +1,1 @@
+# Demo decorator (không gọi API)

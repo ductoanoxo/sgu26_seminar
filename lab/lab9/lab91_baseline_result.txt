@@ -1,0 +1,22 @@
+=== BASELINE STRATEGY DEMO FALLBACK ===
+
+Source Code:
+def get_geometric_mean(
+    net_returns: Dict[str, float],
+) -> float:
+
+Reason: LAB9_DEMO_MODE=1
+No OpenAI API call was made.
+
+Result:
+def get_geometric_mean(
+    net_returns: Dict[str, float],
+) -> float:
+    product: float = 1.0
+    for key in net_returns:
+        product *= net_returns[key]
+    geometric_mean: float = product ** (1 / len(net_returns))
+    return geometric_mean
+
+
+Tokens Used: 0

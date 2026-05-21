@@ -1,0 +1,195 @@
+services:
+  # 📥 Import Service: Universal data import (PostgreSQL, MySQL, MongoDB, SQLite, Files)
+  import-service:
+    build:
+      context: ./services/import-service
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8003:8000"
+    env_file:
+      - ./services/query-service/.env
+    environment:
+      - SERVICE_PORT=8000
+      - SERVICE_HOST=0.0.0.0
+      - NL2SQL_SERVICE_URL=http://nl2sql-service:8000
+      - WATCHFILES_FORCE_POLLING=true  # Hot reload on Windows/Docker
+    restart: unless-stopped
+    volumes:
+      - ./services/import-service:/app
+      - sqlite_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # 🗄️ Query Service: Handles SQL execution on Supabase
+  query-service:
+    build:
+      context: ./services/query-service
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8001:8000"
+    env_file:
+      - ./services/query-service/.env
+    environment:
+      - SERVICE_PORT=8000
+      - SERVICE_HOST=0.0.0.0
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - IMPORT_SERVICE_URL=http://import-service:8000
+      - WATCHFILES_FORCE_POLLING=true  # Hot reload on Windows/Docker
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./services/query-service:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # 🧠 NL2SQL Service: Multi-Agent AI Pipeline
+  nl2sql-service:
+    build:
+      context: ./services/nl2sql-service
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8002:8000"
+    env_file:
+      - ./services/nl2sql-service/.env
+    environment:
+      - SERVICE_PORT=8000
+      - SERVICE_HOST=0.0.0.0
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - QUERY_SERVICE_URL=http://query-service:8000
+      - WATCHFILES_FORCE_POLLING=true  # Hot reload on Windows/Docker
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./services/nl2sql-service:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # 🚀 API Gateway: Orchestrates the system
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./services/api-gateway/.env
+    environment:
+      - SERVICE_PORT=8000
+      - SERVICE_HOST=0.0.0.0
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - IMPORT_SERVICE_URL=http://import-service:8000
+      - NL2SQL_SERVICE_URL=http://nl2sql-service:8000
+      - QUERY_SERVICE_URL=http://query-service:8000
+      - WATCHFILES_FORCE_POLLING=true  # Hot reload on Windows/Docker
+    restart: unless-stopped
+    depends_on:
+      query-service:
+        condition: service_healthy
+      nl2sql-service:
+        condition: service_healthy
+      import-service:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./services/api-gateway:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 🌐 Frontend: Next.js Dashboard
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true         # Force webpack polling on Windows/Docker
+      - CHOKIDAR_USEPOLLING=true       # Legacy fallback for older Next.js watchers
+
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  # 📨 Kafka Broker (KRaft mode — no ZooKeeper)
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:29093,EXTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # 🖥️ Kafka UI
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+volumes:
+  gateway_history:
+  kafka_data:
+  sqlite_data:

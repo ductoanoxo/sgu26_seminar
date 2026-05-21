@@ -1,0 +1,112 @@
+# ============================================================
+# TEST DATABASES — dùng để test Connect Data Source
+# Chạy:  docker compose -f docker-compose.test.yml up -d
+# Xóa:   docker compose -f docker-compose.test.yml down -v
+# ============================================================
+
+services:
+
+  # PostgreSQL (port 5433)
+  # Host: host.docker.internal | Port: 5433 | DB: shopdb | User: testuser | Pass: testpass
+  test-postgres:
+    image: postgres:15-alpine
+    container_name: test-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: shopdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+    volumes:
+      - ./scripts/seed_test_db.sql:/docker-entrypoint-initdb.d/seed.sql
+      - pg_test_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # MySQL (port 3307)
+  # Host: host.docker.internal | Port: 3307 | DB: shopdb | User: testuser | Pass: testpass
+  test-mysql:
+    image: mysql:8.0
+    container_name: test-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: shopdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpass
+    volumes:
+      - ./scripts/seed_mysql.sql:/docker-entrypoint-initdb.d/seed.sql
+      - mysql_test_data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "testuser", "-ptestpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # MongoDB (port 27018)
+  # Host: host.docker.internal | Port: 27018 | DB: shopdb | User: (none) | Pass: (none)
+  test-mongodb:
+    image: mongo:7
+    container_name: test-mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./scripts/seed_mongo.js:/docker-entrypoint-initdb.d/seed.js
+      - mongo_test_data:/data/db
+    restart: unless-stopped
+
+  # Redis (port 6380)
+  # Host: host.docker.internal | Port: 6380 | DB Index: 0 | Pass: (none)
+  test-redis:
+    image: redis:7-alpine
+    container_name: test-redis
+    ports:
+      - "6380:6379"
+    restart: unless-stopped
+
+  # Redis seed — chạy 1 lần sau khi test-redis khởi động
+  test-redis-seed:
+    image: redis:7-alpine
+    container_name: test-redis-seed
+    depends_on:
+      - test-redis
+    restart: "no"
+    command: >
+      sh -c "
+        sleep 3 &&
+        redis-cli -h test-redis SET 'product:1' 'Laptop Dell - 15000000 VND' &&
+        redis-cli -h test-redis SET 'product:2' 'iPhone 15 - 25000000 VND' &&
+        redis-cli -h test-redis SET 'product:3' 'MacBook Pro - 35000000 VND' &&
+        redis-cli -h test-redis SET 'product:4' 'Samsung TV - 8000000 VND' &&
+        redis-cli -h test-redis SET 'product:5' 'Sony Headphones - 3000000 VND' &&
+        redis-cli -h test-redis HSET 'order:1' customer 'Nguyen Van A' product 'Laptop Dell' quantity 1 price 15000000 city 'Ho Chi Minh' &&
+        redis-cli -h test-redis HSET 'order:2' customer 'Tran Thi B' product 'iPhone 15' quantity 2 price 25000000 city 'Hanoi' &&
+        redis-cli -h test-redis HSET 'order:3' customer 'Le Van C' product 'Nike Shoes' quantity 3 price 1500000 city 'Da Nang' &&
+        redis-cli -h test-redis HSET 'order:4' customer 'Pham Thi D' product 'Samsung TV' quantity 1 price 8000000 city 'Ho Chi Minh' &&
+        redis-cli -h test-redis HSET 'order:5' customer 'Nguyen Thi F' product 'MacBook Pro' quantity 1 price 35000000 city 'Ho Chi Minh' &&
+        redis-cli -h test-redis LPUSH 'cities' 'Ho Chi Minh' 'Hanoi' 'Da Nang' 'Can Tho' 'Hue' &&
+        redis-cli -h test-redis SADD 'categories' 'Electronics' 'Fashion' 'Food' 'Sports' &&
+        redis-cli -h test-redis ZADD 'leaderboard:revenue' 35000000 'MacBook Pro' 25000000 'iPhone 15' 18000000 'iPad Air' 15000000 'Laptop Dell' 8000000 'Samsung TV' &&
+        echo 'Redis seed complete'
+      "
+
+  # SQLite init — tạo file /data/shopdb.db rồi share volume với import-service
+  # File path để nhập vào UI: /data/shopdb.db
+  test-sqlite-init:
+    image: python:3.11-alpine
+    container_name: test-sqlite-init
+    volumes:
+      - sqlite_data:/data
+      - ./scripts:/scripts
+    command: python /scripts/create_sqlite_db.py
+    restart: "no"
+
+volumes:
+  pg_test_data:
+  mysql_test_data:
+  mongo_test_data:
+  sqlite_data:
+    external: true
+    name: agent_sql_sqlite_data

@@ -1,0 +1,28 @@
+# Ignore any environment files containing secrets
+.env
+.env.*
+*.env
+.env.local
+.env.*.local
+# Node modules and typical artifacts (optional)
+node_modules/
+dist/
+build/
+
+# Python virtual environment
+.venv/
+
+# Java/Maven build outputs
+**/target/
+*.jar
+*.war
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Ignore large demo videos
+/SeminarL2_Nhom8_DataBridge/video demo/
+/SeminarL2_Nhom8_DataBridge/Data-Bridge/frontend/public/*.mp4

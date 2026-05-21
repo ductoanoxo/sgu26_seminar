@@ -1,0 +1,17 @@
+[
+  {"id": 1, "name": "Laptop Dell XPS 15", "category": "Electronics", "brand": "Dell", "price": 35000000, "stock": 50, "rating": 4.5, "sold": 120},
+  {"id": 2, "name": "iPhone 15 Pro", "category": "Electronics", "brand": "Apple", "price": 28000000, "stock": 80, "rating": 4.8, "sold": 350},
+  {"id": 3, "name": "Samsung 4K Monitor 27\"", "category": "Electronics", "brand": "Samsung", "price": 12000000, "stock": 30, "rating": 4.3, "sold": 75},
+  {"id": 4, "name": "Mechanical Keyboard Keychron K2", "category": "Accessories", "brand": "Keychron", "price": 2500000, "stock": 100, "rating": 4.7, "sold": 210},
+  {"id": 5, "name": "Sony WH-1000XM5 Headphones", "category": "Electronics", "brand": "Sony", "price": 8500000, "stock": 45, "rating": 4.9, "sold": 180},
+  {"id": 6, "name": "Standing Desk Flexispot E7", "category": "Furniture", "brand": "Flexispot", "price": 9000000, "stock": 20, "rating": 4.6, "sold": 40},
+  {"id": 7, "name": "Logitech MX Master 3 Mouse", "category": "Accessories", "brand": "Logitech", "price": 2800000, "stock": 90, "rating": 4.8, "sold": 300},
+  {"id": 8, "name": "iPad Pro 12.9\"", "category": "Electronics", "brand": "Apple", "price": 26000000, "stock": 35, "rating": 4.7, "sold": 95},
+  {"id": 9, "name": "Ergonomic Chair Herman Miller", "category": "Furniture", "brand": "Herman Miller", "price": 25000000, "stock": 15, "rating": 4.9, "sold": 28},
+  {"id": 10, "name": "Webcam Logitech C920", "category": "Accessories", "brand": "Logitech", "price": 1800000, "stock": 120, "rating": 4.4, "sold": 450},
+  {"id": 11, "name": "MacBook Pro M3 14\"", "category": "Electronics", "brand": "Apple", "price": 52000000, "stock": 25, "rating": 4.9, "sold": 60},
+  {"id": 12, "name": "USB-C Hub Anker 13-in-1", "category": "Accessories", "brand": "Anker", "price": 1500000, "stock": 200, "rating": 4.3, "sold": 520},
+  {"id": 13, "name": "Gaming Chair DXRacer", "category": "Furniture", "brand": "DXRacer", "price": 7500000, "stock": 18, "rating": 4.2, "sold": 85},
+  {"id": 14, "name": "AirPods Pro 2nd Gen", "category": "Electronics", "brand": "Apple", "price": 6500000, "stock": 60, "rating": 4.8, "sold": 280},
+  {"id": 15, "name": "SSD Samsung 980 Pro 1TB", "category": "Electronics", "brand": "Samsung", "price": 3200000, "stock": 75, "rating": 4.6, "sold": 190}
+]
